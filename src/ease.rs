@@ -3,6 +3,9 @@
 #[allow(missing_docs)]
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum EaseFunction {
+    Zero,
+    Linear,
+
     QuadraticIn,
     QuadraticOut,
     QuadraticInOut,
@@ -48,6 +51,9 @@ pub enum EaseFunction {
 pub trait Ease {
     /// Calculate the eased value, normalized
     fn calc(self, f: EaseFunction) -> Self;
+
+    fn zero(self) -> Self;
+    fn linear(self) -> Self;
 
     fn quadratic_in(self) -> Self;
     fn quadratic_out(self) -> Self;
@@ -106,6 +112,9 @@ macro_rules! impl_ease_trait_for {
         impl Ease for $T {
             fn calc(self, f: EaseFunction) -> Self {
                 match f {
+                    EaseFunction::Zero => self.zero(),
+                    EaseFunction::Linear => self.linear(),
+
                     EaseFunction::QuadraticIn => self.quadratic_in(),
                     EaseFunction::QuadraticOut => self.quadratic_out(),
                     EaseFunction::QuadraticInOut => self.quadratic_in_out(),
@@ -146,6 +155,14 @@ macro_rules! impl_ease_trait_for {
                     EaseFunction::BounceOut => self.bounce_out(),
                     EaseFunction::BounceInOut => self.bounce_in_out(),
                 }
+            }
+
+            fn zero(self) -> Self {
+                0.0
+            }
+
+            fn linear(self) -> Self {
+                $T::clamp(self)
             }
 
             fn quadratic_in(self) -> Self {

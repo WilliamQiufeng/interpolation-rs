@@ -19,6 +19,12 @@ macro_rules! bench_ease {
     )
 }
 
+bench_ease!(bench_zero_f32, f32, zero);
+bench_ease!(bench_zero_f64, f64, zero);
+
+bench_ease!(bench_linear_f32, f32, linear);
+bench_ease!(bench_linear_f64, f64, linear);
+
 bench_ease!(bench_quadratic_in_f32, f32, quadratic_in);
 bench_ease!(bench_quadratic_in_f64, f64, quadratic_in);
 
